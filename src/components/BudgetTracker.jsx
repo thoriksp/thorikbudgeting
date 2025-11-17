@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, TrendingUp, TrendingDown, DollarSign, Target, Edit2, Check, X, Zap, Calendar, Filter, Download, Search, AlertTriangle, CheckCircle } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
-export default function BudgetTracker() {
+export default function BudgetTracker({ user, onLogout }) {
   const [transactions, setTransactions] = useState([]);
   const [bulkInput, setBulkInput] = useState('');
   const [description, setDescription] = useState('');
@@ -378,9 +378,20 @@ export default function BudgetTracker() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">
-          💰 Budget Tracker Harian
-        </h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+            💰 Budget Tracker Harian
+          </h1>
+          {/** tombol logout akan tampil bila prop onLogout diberikan oleh App.jsx */}
+          {typeof onLogout === 'function' && (
+            <button
+              onClick={onLogout}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+            >
+              Logout
+            </button>
+          )}
+        </div>
 
         {alerts.length > 0 && (
           <div className="mb-4 space-y-2">
@@ -434,10 +445,13 @@ export default function BudgetTracker() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs sm:text-sm text-gray-600">Saldo</p>
+                <p className={`text-lg sm:text-2xl font-bold ${balance >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
+                  {formatCurrency(balance)}
+                </p>
               </div>
+              <DollarSign className="text-blue-600" size={28} />
             </div>
           </div>
-        </div>
 
         <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg shadow-lg p-4 sm:p-6 mb-4 sm:mb-6 text-white">
           <div className="flex items-center justify-between mb-4">
