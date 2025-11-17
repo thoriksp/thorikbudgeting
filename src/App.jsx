@@ -19,6 +19,7 @@ function App() {
 
   const handleLogout = async () => {
     await signOut(auth);
+    setUser(null);
   };
 
   if (loading) {
